@@ -1,9 +1,11 @@
 AFRAME.registerComponent("follow-camera", {
   tick: function() {
-    var cam = document.getElementById("camera");
-    cam.object3D.position.x = this.el.object3D.position.x;
-    //cam.object3D.position.y = this.el.object3D.position.y + 1.6;
-    cam.object3D.position.z = this.el.object3D.position.z + 2;
+    var cam = document.getElementById("camera").parentElement;
+    var pos = cam.getAttribute("position");
+    pos.x = this.el.object3D.position.x;
+    //pos.y = this.el.object3D.position.y + 1.6;
+    pos.z = this.el.object3D.position.z + 4;
+    cam.setAttribute("position", pos);
   }
 });
 
