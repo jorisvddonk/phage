@@ -145,6 +145,12 @@ AFRAME.registerComponent("spaceship", {
     this.quat = new THREE.Quaternion();
     this.quat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI);
     this.TEMPQUAT = new THREE.Quaternion();
+    this.TEMP_VEC = new THREE.Vector3(0, 0, 0);
+    this.raycaster = new THREE.Raycaster();
+    this.raycaster.near = 0;
+    this.raycaster.far = 100;
+    this.raycaster_dir = new THREE.Vector3(0, -1, 0);
+    this.collidable = document.querySelector("#world");
   },
   tick: function(time, timeDelta) {
     var axis_h = 0;
@@ -195,8 +201,21 @@ AFRAME.registerComponent("spaceship", {
     this.el.object3D.position.add(
       this.movement.clone().multiplyScalar(timeDelta / 1000)
     );
-    if (this.el.object3D.position.y < 1.1) {
-      this.el.object3D.position.y = 1.1;
+
+    var pos = this.el.object3D.position;
+    this.TEMP_VEC.set(pos.x, pos.y + 4, pos.z);
+    this.raycaster.set(this.TEMP_VEC, this.raycaster_dir);
+    var intersects = this.raycaster.intersectObject(
+      this.collidable.object3D,
+      true
+    );
+    var y = 0;
+    if (intersects.length > 0) {
+      y = intersects[0].point.y;
+    }
+
+    if (this.el.object3D.position.y < y) {
+      this.el.object3D.position.y = y;
       this.movement.x = 0;
       this.movement.y = 0;
       this.movement.z = 0;
