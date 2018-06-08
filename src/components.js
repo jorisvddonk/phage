@@ -7,19 +7,8 @@ AFRAME.registerComponent("follow-camera", {
   }
 });
 
-AFRAME.registerComponent("spaceship", {
+AFRAME.registerComponent("spaceship-model", {
   init: function() {
-    this.thrust = 0;
-    this.movement = new THREE.Vector3(0, 0, 0);
-    this.el.addEventListener("gripchanged", e => {
-      if (e.detail.value > 0.01) {
-        this.thrust = e.detail.value;
-      } else {
-        this.thrust = 0;
-      }
-    });
-    this.gravityVector = new THREE.Vector3(0, -0.1, 0);
-
     this.geometry = new THREE.Geometry();
 
     this.geometry.vertices.push(new THREE.Vector3(0, 0, 0));
@@ -66,11 +55,59 @@ AFRAME.registerComponent("spaceship", {
     this.geometry.computeBoundingSphere();
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.el.setObject3D("mesh", this.mesh);
+  }
+});
+
+AFRAME.registerComponent("spaceship", {
+  init: function() {
+    this.thrust = 0;
+    this.movement = new THREE.Vector3(0, 0, 0);
+    this.el.addEventListener("gripchanged", e => {
+      if (e.detail.value > 0.01) {
+        this.thrust = e.detail.value;
+      } else {
+        this.thrust = 0;
+      }
+    });
+    this.gravityVector = new THREE.Vector3(0, -0.1, 0);
+
+    this.gamepad = navigator.getGamepads()[0];
+    window.addEventListener("gamepadconnected", e => {
+      console.log(`switched to gamepad ${e.gamepad.index}`);
+      this.gamepad = e.gamepad;
+    });
+    this.quat = new THREE.Quaternion();
+    this.quat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI);
+    this.TEMPQUAT = new THREE.Quaternion();
   },
   tick: function(time, timeDelta) {
+    if (this.gamepad) {
+      this.thrust = this.gamepad.buttons[6].value;
+    }
+    var axis_h = this.gamepad.axes[0];
+    if (axis_h < 0.1 && axis_h > -0.1) {
+      axis_h = 0;
+    }
+    var axis_v = this.gamepad.axes[3];
+    if (axis_v < 0.1 && axis_v > -0.1) {
+      axis_v = 0;
+    }
+
+    /* // mirror oculus rift hand position
     this.el.object3D.setRotationFromQuaternion(
       this.el.children[0].object3D.quaternion
     );
+    */
+    this.TEMPQUAT.setFromAxisAngle(
+      new THREE.Vector3(0, 1, 0),
+      axis_h * -0.05
+    ).normalize();
+    this.quat.premultiply(this.TEMPQUAT);
+    this.TEMPQUAT.set(axis_v * 0.01, 0, 0, 1).normalize();
+    this.quat.multiply(this.TEMPQUAT);
+
+    //Do the actual movement/rotation
+    this.el.object3D.setRotationFromQuaternion(this.quat);
     if (this.thrust) {
       var vector = new THREE.Vector3(0, 1, 0);
       vector.applyQuaternion(this.el.object3D.quaternion);
