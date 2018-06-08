@@ -1,5 +1,7 @@
 AFRAME.registerComponent("spaceship", {
   init: function() {
+    this.game = this.el.sceneEl.systems["game"];
+    this.game.registerShip(this);
     this.thrust = 0;
     this.movement = new THREE.Vector3(0, 0, 0);
     this.el.addEventListener("gripchanged", e => {
@@ -24,7 +26,7 @@ AFRAME.registerComponent("spaceship", {
     this.raycaster.near = 0;
     this.raycaster.far = 100;
     this.raycaster_dir = new THREE.Vector3(0, -1, 0);
-    this.collidable = document.querySelector("#world");
+    this.collidable = document.querySelector("#collidables");
   },
   tick: function(time, timeDelta) {
     var axis_h = 0;
@@ -44,6 +46,12 @@ AFRAME.registerComponent("spaceship", {
       axis_v = this.gamepad.axes[3];
       if (axis_v < 0.1 && axis_v > -0.1) {
         axis_v = 0;
+      }
+    }
+
+    if (this.gamepad && this.gamepad.buttons[7]) {
+      if (this.gamepad.buttons[7].value > 0.1) {
+        this.game.shoot();
       }
     }
 

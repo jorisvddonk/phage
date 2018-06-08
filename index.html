@@ -11,13 +11,17 @@
 
     <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
 
-    <a-entity id="world" position="0 1 -2" terrain rotation="-90 0 0" shadow="receive: true; cast: false"></a-entity>
-    <a-entity spaceship spaceship-model follow-camera position="0 1 -3" shadow="cast: true; receive: false">
-      <a-entity visible="false" oculus-touch-controls="hand: left"></a-entity>
+    <a-entity id="world">
+      <a-entity id="collidables">
+        <a-entity terrain shadow="receive: true; cast: false"></a-entity>
+      </a-entity>
+      <a-entity spaceship spaceship-model follow-camera shadow="cast: true; receive: false">
+        <a-entity visible="false" oculus-touch-controls="hand: left"></a-entity>
+      </a-entity>
     </a-entity>
 
     <a-entity position="0 1 0" dirlight>
-      <a-entity position="0 0.6 -2" id="camera" camera>
+      <a-entity position="0 0.6 -2" rotation="0 0 0" id="camera" camera>
       </a-entity>
     </a-entity>
   </a-scene>

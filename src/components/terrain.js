@@ -40,6 +40,7 @@ AFRAME.registerComponent("terrain", {
 
     this.geometry.translate(SIZE * -0.5, SIZE * -0.5, 0);
     this.geometry.scale(0.5, 0.5, 0.5);
+    this.geometry.rotateX(Math.PI * -0.5);
 
     this.material = new THREE.MeshStandardMaterial({
       roughness: 1,
