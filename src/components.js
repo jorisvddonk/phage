@@ -71,7 +71,7 @@ AFRAME.registerComponent("spaceship", {
         this.thrust = 0;
       }
     });
-    this.gravityVector = new THREE.Vector3(0, -0.1, 0);
+    this.gravityVector = new THREE.Vector3(0, -0.06, 0);
 
     this.gamepad = navigator.getGamepads()[0];
     window.addEventListener("gamepadconnected", e => {
@@ -83,16 +83,24 @@ AFRAME.registerComponent("spaceship", {
     this.TEMPQUAT = new THREE.Quaternion();
   },
   tick: function(time, timeDelta) {
-    if (this.gamepad) {
+    var axis_h = 0;
+    var axis_v = 0;
+    if (
+      this.gamepad &&
+      this.gamepad.axes[3] &&
+      this.gamepad.axes[0] &&
+      this.gamepad.buttons[6]
+    ) {
       this.thrust = this.gamepad.buttons[6].value;
-    }
-    var axis_h = this.gamepad.axes[0];
-    if (axis_h < 0.1 && axis_h > -0.1) {
-      axis_h = 0;
-    }
-    var axis_v = this.gamepad.axes[3];
-    if (axis_v < 0.1 && axis_v > -0.1) {
-      axis_v = 0;
+
+      axis_h = this.gamepad.axes[0];
+      if (axis_h < 0.1 && axis_h > -0.1) {
+        axis_h = 0;
+      }
+      axis_v = this.gamepad.axes[3];
+      if (axis_v < 0.1 && axis_v > -0.1) {
+        axis_v = 0;
+      }
     }
 
     /* // mirror oculus rift hand position
@@ -114,7 +122,7 @@ AFRAME.registerComponent("spaceship", {
       var vector = new THREE.Vector3(0, 1, 0);
       vector.applyQuaternion(this.el.object3D.quaternion);
       this.movement.add(
-        vector.multiplyScalar((timeDelta / 1000) * this.thrust * 10)
+        vector.multiplyScalar((timeDelta / 1000) * this.thrust * 7)
       );
     }
     this.movement.add(this.gravityVector);
