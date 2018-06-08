@@ -1,4 +1,13 @@
-AFRAME.registerComponent("foo", {
+AFRAME.registerComponent("follow-camera", {
+  tick: function() {
+    var cam = document.getElementById("camera");
+    cam.object3D.position.x = this.el.object3D.position.x;
+    //cam.object3D.position.y = this.el.object3D.position.y + 1.6;
+    cam.object3D.position.z = this.el.object3D.position.z + 2;
+  }
+});
+
+AFRAME.registerComponent("spaceship", {
   init: function() {
     this.thrust = 0;
     this.movement = new THREE.Vector3(0, 0, 0);
