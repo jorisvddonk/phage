@@ -10,7 +10,9 @@ AFRAME.registerComponent("age", {
   tick: function(time, timeDelta) {
     this.age += timeDelta;
     if (this.age > this.data.max) {
-      this.el.parentNode.removeChild(this.el);
+      if (this.el.parentNode) {
+        this.el.parentNode.removeChild(this.el);
+      }
     }
   }
 });

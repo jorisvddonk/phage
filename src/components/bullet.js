@@ -23,8 +23,10 @@ AFRAME.registerComponent("bullet", {
     );
     if (intersects.length > 0) {
       this.game.addExplosion(intersects[0].point.clone());
-      this.el.parentNode.removeChild(this.el);
-      return;
+      if (this.el.parentNode) {
+        this.el.parentNode.removeChild(this.el);
+        return;
+      }
     }
 
     this.el.object3D.position.add(
