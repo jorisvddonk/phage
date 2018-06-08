@@ -5,30 +5,33 @@ AFRAME.registerComponent("bullet", {
     }
   },
   init: function() {
+    this.game = this.el.sceneEl.systems["game"];
     this.raycaster = new THREE.Raycaster();
     this.raycaster.near = 0;
-    this.collidable = document.querySelector("#collidables");
-    this.game = this.el.sceneEl.systems["game"];
-  },
-  tick: function(time, timeDelta) {
+    this.raycaster.far = this.data.velocity.clone().multiplyScalar(1000); // TODO: use data from age.max
+
     var pos = this.el.object3D.position.clone();
-    this.raycaster.far = this.data.velocity
-      .clone()
-      .multiplyScalar(timeDelta / 1000)
-      .length();
     this.raycaster.set(pos, this.data.velocity);
+    this.collisionPoint = null;
     var intersects = this.raycaster.intersectObject(
-      this.collidable.object3D,
+      this.game.collidables.object3D,
       true
     );
     if (intersects.length > 0) {
-      this.game.addExplosion(intersects[0].point.clone());
+      this.collisionPoint = intersects[0].point;
+    }
+  },
+  tick: function(time, timeDelta) {
+    if (
+      this.collisionPoint &&
+      this.collisionPoint.distanceToSquared(this.el.object3D.position) < 2
+    ) {
+      this.game.addExplosion(this.collisionPoint);
       if (this.el.parentNode) {
         this.el.parentNode.removeChild(this.el);
         return;
       }
     }
-
     this.el.object3D.position.add(
       this.data.velocity.clone().multiplyScalar(timeDelta / 1000)
     );

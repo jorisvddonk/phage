@@ -4,6 +4,7 @@ AFRAME.registerSystem("game", {
     this.ship = null;
     this.bullets = [];
     this.world = document.getElementById("world");
+    this.collidables = document.getElementById("collidables");
   },
   registerShip: function(ship) {
     this.ship = ship;
