@@ -19,6 +19,45 @@ AFRAME.registerComponent("spaceship", {
       }
     });
     this.gravityVector = new THREE.Vector3(0, -0.1, 0);
+
+    this.geometry = new THREE.Geometry();
+
+    this.geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    this.geometry.vertices.push(new THREE.Vector3(2, 0, 0));
+    this.geometry.vertices.push(new THREE.Vector3(1, 0, 1.5));
+    this.geometry.vertices.push(new THREE.Vector3(-1, 0, 1.5));
+    this.geometry.vertices.push(new THREE.Vector3(-2, 0, 0));
+    this.geometry.vertices.push(new THREE.Vector3(-0.75, 0, -2.5));
+    this.geometry.vertices.push(new THREE.Vector3(0.75, 0, -2.5));
+    this.geometry.vertices.push(new THREE.Vector3(0, 1, 0));
+
+    this.geometry.faces.push(new THREE.Face3(0, 1, 2));
+    this.geometry.faces.push(new THREE.Face3(0, 2, 3));
+    this.geometry.faces.push(new THREE.Face3(0, 3, 4));
+    this.geometry.faces.push(new THREE.Face3(0, 4, 5));
+    this.geometry.faces.push(new THREE.Face3(0, 5, 6));
+    this.geometry.faces.push(new THREE.Face3(0, 6, 1));
+    this.geometry.faces.push(new THREE.Face3(7, 1, 2));
+    this.geometry.faces.push(new THREE.Face3(7, 2, 3));
+    this.geometry.faces.push(new THREE.Face3(7, 3, 4));
+    this.geometry.faces.push(new THREE.Face3(7, 4, 5));
+    this.geometry.faces.push(new THREE.Face3(7, 5, 6));
+    this.geometry.faces.push(new THREE.Face3(7, 6, 1));
+
+    this.geometry.scale(0.1, 0.1, 0.1);
+
+    this.material = new THREE.MeshStandardMaterial({
+      color: "#932",
+      side: THREE.DoubleSide,
+      roughness: 1,
+      metalness: 0,
+      flatShading: true
+    });
+    this.geometry.computeVertexNormals();
+    this.geometry.computeFaceNormals();
+    this.geometry.computeBoundingSphere();
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.el.setObject3D("mesh", this.mesh);
   },
   tick: function(time, timeDelta) {
     this.el.object3D.setRotationFromQuaternion(
@@ -37,8 +76,8 @@ AFRAME.registerComponent("spaceship", {
     this.el.object3D.position.add(
       this.movement.clone().multiplyScalar(timeDelta / 1000)
     );
-    if (this.el.object3D.position.y < 1) {
-      this.el.object3D.position.y = 1;
+    if (this.el.object3D.position.y < 1.1) {
+      this.el.object3D.position.y = 1.1;
       this.movement.x = 0;
       this.movement.y = 0;
       this.movement.z = 0;
