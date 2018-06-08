@@ -3,7 +3,7 @@ AFRAME.registerComponent("spaceship", {
     this.game = this.el.sceneEl.systems["game"];
     this.game.registerShip(this);
     this.thrust = 0;
-    this.movement = new THREE.Vector3(0, 0, 0);
+    this.velocity = new THREE.Vector3(0, 0, 0);
     this.el.addEventListener("gripchanged", e => {
       if (e.detail.value > 0.01) {
         this.thrust = e.detail.value;
@@ -68,20 +68,20 @@ AFRAME.registerComponent("spaceship", {
     this.TEMPQUAT.set(axis_v * 0.01, 0, 0, 1).normalize();
     this.quat.multiply(this.TEMPQUAT);
 
-    //Do the actual movement/rotation
+    //Do the actual velocity/rotation
     this.el.object3D.setRotationFromQuaternion(this.quat);
     if (this.thrust) {
       var vector = new THREE.Vector3(0, 1, 0);
       vector.applyQuaternion(this.el.object3D.quaternion);
-      this.movement.add(
+      this.velocity.add(
         vector.multiplyScalar((timeDelta / 1000) * this.thrust * 7)
       );
     }
-    this.movement.add(this.gravityVector);
-    this.movement.x *= 0.98;
-    this.movement.z *= 0.98;
+    this.velocity.add(this.gravityVector);
+    this.velocity.x *= 0.98;
+    this.velocity.z *= 0.98;
     this.el.object3D.position.add(
-      this.movement.clone().multiplyScalar(timeDelta / 1000)
+      this.velocity.clone().multiplyScalar(timeDelta / 1000)
     );
 
     var pos = this.el.object3D.position;
@@ -98,9 +98,9 @@ AFRAME.registerComponent("spaceship", {
 
     if (this.el.object3D.position.y < y) {
       this.el.object3D.position.y = y;
-      this.movement.x = 0;
-      this.movement.y = 0;
-      this.movement.z = 0;
+      this.velocity.x = 0;
+      this.velocity.y = 0;
+      this.velocity.z = 0;
     }
   }
 });

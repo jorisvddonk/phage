@@ -15,6 +15,7 @@ AFRAME.registerSystem("game", {
     bullet.setAttribute("position", this.ship.el.object3D.position);
     var vector = new THREE.Vector3(0, 0, -10);
     vector.applyQuaternion(this.ship.el.object3D.quaternion);
+    vector.add(this.ship.velocity);
     bullet.setAttribute("bullet", "velocity", vector);
     this.world.appendChild(bullet);
   }
