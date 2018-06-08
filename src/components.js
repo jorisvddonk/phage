@@ -36,11 +36,13 @@ AFRAME.registerComponent("terrain", {
     var simplex = new SimplexNoise();
     this.geometry = new THREE.Geometry();
     var SIZE = 100;
+    var RESO = 0.1;
+    var VRESO = 2;
 
     for (var y = 0; y < SIZE; y++) {
       for (var x = 0; x < SIZE; x++) {
         this.geometry.vertices.push(
-          new THREE.Vector3(x, y, simplex.noise2D(x, y) * 0.2)
+          new THREE.Vector3(x, y, simplex.noise2D(x * RESO, y * RESO) * VRESO)
         );
       }
     }
