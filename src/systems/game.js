@@ -9,7 +9,7 @@ AFRAME.registerSystem("game", {
     this.ship = ship;
   },
   shoot: function() {
-    var bullet = document.createElement("a-sphere");
+    var bullet = document.createElement("a-tetrahedron");
     bullet.setAttribute("bullet", "");
     bullet.setAttribute("radius", 0.01);
     bullet.setAttribute("age", "max", 700);
@@ -23,7 +23,7 @@ AFRAME.registerSystem("game", {
     this.world.appendChild(bullet);
   },
   addExplosion: function(position) {
-    var explosion = document.createElement("a-sphere");
+    var explosion = document.createElement("a-tetrahedron");
     explosion.setAttribute("explosion", "");
     explosion.setAttribute("radius", 0.03);
     explosion.setAttribute("sound", "src", "#hit");
