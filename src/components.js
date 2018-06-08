@@ -41,9 +41,11 @@ AFRAME.registerComponent("terrain", {
 
     for (var y = 0; y < SIZE; y++) {
       for (var x = 0; x < SIZE; x++) {
-        this.geometry.vertices.push(
-          new THREE.Vector3(x, y, simplex.noise2D(x * RESO, y * RESO) * VRESO)
-        );
+        var z = simplex.noise2D(x * RESO, y * RESO) * VRESO;
+        if (z <= 0) {
+          z = 0;
+        }
+        this.geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
     }
 
@@ -56,6 +58,18 @@ AFRAME.registerComponent("terrain", {
       }
     }
 
+    this.geometry.faces.forEach((face, i) => {
+      if (
+        this.geometry.vertices[face.a].z == 0 &&
+        this.geometry.vertices[face.b].z == 0 &&
+        this.geometry.vertices[face.c].z == 0
+      ) {
+        face.color.setRGB(0.1, 0.3 + Math.random() * 0.03, 0.7);
+      } else {
+        face.color.setRGB(0.2, 0.5 + Math.random() * 0.01, 0.2);
+      }
+    });
+
     this.geometry.translate(SIZE * -0.5, SIZE * -0.5, 0);
     this.geometry.scale(0.5, 0.5, 0.5);
 
@@ -63,11 +77,12 @@ AFRAME.registerComponent("terrain", {
       roughness: 1,
       metalness: 0,
       flatShading: true,
-      color: "#383"
+      vertexColors: THREE.FaceColors
     });
     this.geometry.computeVertexNormals();
     this.geometry.computeFaceNormals();
     this.geometry.computeBoundingSphere();
+    this.geometry.colorsNeedUpdate = true;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.el.setObject3D("mesh", this.mesh);
   }
