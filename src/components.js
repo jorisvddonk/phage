@@ -44,14 +44,22 @@ AFRAME.registerComponent("spaceship", {
     this.geometry.faces.push(new THREE.Face3(7, 5, 6));
     this.geometry.faces.push(new THREE.Face3(7, 6, 1));
 
+    this.geometry.faces.forEach(function(face, i) {
+      if (i < 6) {
+        face.color.setRGB(0.5 + (i % 2) * 0.1, 0.2, 0.2);
+      } else {
+        face.color.setRGB(0.1, 0.3 + (i % 2) * 0.2, 0.7);
+      }
+    });
+
     this.geometry.scale(0.1, 0.1, 0.1);
 
     this.material = new THREE.MeshStandardMaterial({
-      color: "#932",
       side: THREE.DoubleSide,
       roughness: 1,
       metalness: 0,
-      flatShading: true
+      flatShading: true,
+      vertexColors: THREE.FaceColors
     });
     this.geometry.computeVertexNormals();
     this.geometry.computeFaceNormals();
