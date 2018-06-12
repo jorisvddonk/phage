@@ -42,13 +42,18 @@ AFRAME.registerSystem("game", {
     bullet.setAttribute("movable", "velocity", vector);
     this.world.appendChild(bullet);
   },
-  addExplosion: function(position) {
-    var explosion = document.createElement("a-tetrahedron");
+  addExplosion: function(position, size) {
+    var explosion = document.createElement("a-sphere");
     explosion.setAttribute("explosion", "");
-    explosion.setAttribute("radius", 0.03);
+    explosion.setAttribute(
+      "color",
+      size > 0.1 ? "rgba(255,200,100,0.6)" : "rgba(100,100,100,0.75)"
+    );
+    explosion.setAttribute("opacity", "0.75");
+    explosion.setAttribute("radius", size !== undefined ? size : 0.03);
     explosion.setAttribute("sound", "src", "#hit");
     explosion.setAttribute("sound", "autoplay", true);
-    explosion.setAttribute("position", position);
+    explosion.setAttribute("position", position.clone());
     explosion.setAttribute("age", "max", 1000);
     this.world.appendChild(explosion);
   }
