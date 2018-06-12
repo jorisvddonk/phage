@@ -6,7 +6,7 @@ AFRAME.registerSystem("gamesounds", {
       noise: { type: "brown" },
       envelope: { attack: 0.1, decay: 1, sustain: 1, release: 0.2 }
     }).toMaster();
-    this.sounds.thrust.volume.value = -12;
+    this.sounds.thrust.volume.value = -24;
     this.soundsPlaying = {};
   },
   startSound: function(name, attack) {
