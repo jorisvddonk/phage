@@ -6,7 +6,6 @@ AFRAME.registerComponent("destroyable", {
   },
   init: function(data) {
     this.hp = this.data.hp;
-    console.log(this.hp);
     this.el.addEventListener("hitWithBullet", () => {
       this.registerHit(1);
     });
