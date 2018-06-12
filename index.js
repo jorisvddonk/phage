@@ -8,3 +8,4 @@ require("./src/components/spaceship-model.js");
 require("./src/components/bullet.js");
 require("./src/components/age.js");
 require("./src/systems/game.js");
+require("./src/systems/keyboard.js");

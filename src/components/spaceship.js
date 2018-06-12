@@ -1,6 +1,7 @@
 AFRAME.registerComponent("spaceship", {
   init: function() {
     this.game = this.el.sceneEl.systems["game"];
+    this.keyboard = this.el.sceneEl.systems["keyboard"];
     this.game.registerShip(this);
     this.thrust = 0;
     this.velocity = new THREE.Vector3(0, 0, 0);
@@ -31,6 +32,20 @@ AFRAME.registerComponent("spaceship", {
   tick: function(time, timeDelta) {
     var axis_h = 0;
     var axis_v = 0;
+    this.thrust = this.keyboard.isKeyDown("KeyA") ? 1 : 0;
+    if (this.keyboard.isKeyDown("ArrowLeft")) {
+      axis_h = -1.0;
+    }
+    if (this.keyboard.isKeyDown("ArrowRight")) {
+      axis_h = 1.0;
+    }
+    if (this.keyboard.isKeyDown("ArrowUp")) {
+      axis_v = -1.0;
+    }
+    if (this.keyboard.isKeyDown("ArrowDown")) {
+      axis_v = 1.0;
+    }
+
     if (
       this.gamepad &&
       this.gamepad.axes[3] &&
@@ -49,10 +64,13 @@ AFRAME.registerComponent("spaceship", {
       }
     }
 
-    if (this.gamepad && this.gamepad.buttons[7]) {
-      if (this.gamepad.buttons[7].value > 0.1) {
-        this.game.shoot();
-      }
+    if (
+      this.keyboard.isKeyDown("Space") ||
+      (this.gamepad &&
+        this.gamepad.buttons[7] &&
+        this.gamepad.buttons[7].value > 0.1)
+    ) {
+      this.game.shoot();
     }
 
     /* // mirror oculus rift hand position
