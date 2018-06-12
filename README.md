@@ -1,6 +1,23 @@
 # Phage - a game made with A-Frame
 
-T.B.D.
+A work-in-progress game inspired by [Zarch](https://en.wikipedia.org/wiki/Zarch).
+
+http://phage.sarvva.moos.es/
+
+## Controls
+
+If you don't have a controller attached:
+
+`A` - Thrust upwards
+`Space` - Shoot
+`Arrow keys` - Turn
+
+If you do have a (twin-stick) controller attached (Xbox 360 style controller):
+
+`Left trigger` - Thrust upwards
+`Right trigger` - Shoot
+`Left stick, horizontal axis` - Turn left/right
+`Right stick, vertical axis` - Turn up/down
 
 ## Running Phage locally
 
