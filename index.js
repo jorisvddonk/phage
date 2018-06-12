@@ -1,5 +1,6 @@
 // libs and files
 require("aframe");
+require("aframe-point-component");
 require("./src/components/follow-camera.js");
 require("./src/components/dirlight.js");
 require("./src/components/terrain.js");

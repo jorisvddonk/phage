@@ -10,9 +10,11 @@ AFRAME.registerSystem("game", {
     this.ship = ship;
   },
   shoot: function() {
-    var bullet = document.createElement("a-tetrahedron");
+    var bullet = document.createElement("a-entity");
     bullet.setAttribute("bullet", "");
-    bullet.setAttribute("radius", 0.01);
+    bullet.setAttribute("point", "size", 0.01);
+    bullet.setAttribute("point", "perspective", true);
+    bullet.setAttribute("point", "color", "#fff");
     bullet.setAttribute("age", "max", 700);
     bullet.setAttribute("sound", "src", "#shoot");
     bullet.setAttribute("sound", "autoplay", true);
