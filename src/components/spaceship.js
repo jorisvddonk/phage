@@ -2,6 +2,7 @@ AFRAME.registerComponent("spaceship", {
   init: function() {
     this.game = this.el.sceneEl.systems["game"];
     this.keyboard = this.el.sceneEl.systems["keyboard"];
+    this.gamesounds = this.el.sceneEl.systems["gamesounds"];
     this.game.registerShip(this);
     this.thrust = 0;
     this.velocity = new THREE.Vector3(0, 0, 0);
@@ -95,6 +96,9 @@ AFRAME.registerComponent("spaceship", {
         vector.multiplyScalar((timeDelta / 1000) * this.thrust * 7)
       );
       this.game.showThrust();
+      this.gamesounds.startSound("thrust");
+    } else {
+      this.gamesounds.stopSound("thrust");
     }
     this.velocity.add(this.gravityVector);
     this.velocity.x *= 0.98;

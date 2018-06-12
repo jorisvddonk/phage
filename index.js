@@ -10,4 +10,5 @@ require("./src/components/movable.js");
 require("./src/components/bullet.js");
 require("./src/components/age.js");
 require("./src/systems/game.js");
+require("./src/systems/gamesounds.js");
 require("./src/systems/keyboard.js");
