@@ -8,6 +8,8 @@ require("./src/components/spaceship.js");
 require("./src/components/spaceship-model.js");
 require("./src/components/building.js");
 require("./src/components/building-model.js");
+require("./src/components/tree.js");
+require("./src/components/tree-model.js");
 require("./src/components/place-on-ground.js");
 require("./src/components/destroyable.js");
 require("./src/components/movable.js");
