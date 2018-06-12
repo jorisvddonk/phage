@@ -4,14 +4,21 @@ AFRAME.registerComponent("bullet", {
       type: "vec3"
     }
   },
+  dependencies: ["movable"],
   init: function() {
     this.game = this.el.sceneEl.systems["game"];
     this.raycaster = new THREE.Raycaster();
     this.raycaster.near = 0;
-    this.raycaster.far = this.data.velocity.clone().multiplyScalar(1000); // TODO: use data from age.max
+
+    this.raycaster.far = this.el.components.movable.data.velocity
+      .clone()
+      .multiplyScalar(1000); // TODO: use data from age.max
 
     var pos = this.el.object3D.position.clone();
-    this.raycaster.set(pos, this.data.velocity.clone().normalize());
+    this.raycaster.set(
+      pos,
+      this.el.components.movable.data.velocity.clone().normalize()
+    );
     this.collisionPoint = null;
     var intersects = this.raycaster.intersectObject(
       this.game.collidables.object3D,
@@ -32,8 +39,5 @@ AFRAME.registerComponent("bullet", {
         return;
       }
     }
-    this.el.object3D.position.add(
-      this.data.velocity.clone().multiplyScalar(timeDelta / 1000)
-    );
   }
 });

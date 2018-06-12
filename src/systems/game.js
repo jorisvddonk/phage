@@ -9,6 +9,23 @@ AFRAME.registerSystem("game", {
   registerShip: function(ship) {
     this.ship = ship;
   },
+  showThrust() {
+    var fx = document.createElement("a-entity");
+    fx.setAttribute("point", "size", 0.01);
+    fx.setAttribute("point", "perspective", true);
+    fx.setAttribute("point", "color", "#ff0");
+    fx.setAttribute("age", "max", 100);
+    fx.setAttribute("position", this.ship.el.object3D.position);
+    var vector = new THREE.Vector3(
+      Math.random() * 0.24 - 0.12,
+      -1,
+      Math.random() * 0.24 - 0.12
+    );
+    vector.applyQuaternion(this.ship.el.object3D.quaternion);
+    vector.add(this.ship.velocity);
+    fx.setAttribute("movable", "velocity", vector);
+    this.world.appendChild(fx);
+  },
   shoot: function() {
     var bullet = document.createElement("a-entity");
     bullet.setAttribute("bullet", "");
@@ -22,7 +39,7 @@ AFRAME.registerSystem("game", {
     var vector = new THREE.Vector3(0, 0, -10);
     vector.applyQuaternion(this.ship.el.object3D.quaternion);
     vector.add(this.ship.velocity);
-    bullet.setAttribute("bullet", "velocity", vector);
+    bullet.setAttribute("movable", "velocity", vector);
     this.world.appendChild(bullet);
   },
   addExplosion: function(position) {

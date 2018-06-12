@@ -94,6 +94,7 @@ AFRAME.registerComponent("spaceship", {
       this.velocity.add(
         vector.multiplyScalar((timeDelta / 1000) * this.thrust * 7)
       );
+      this.game.showThrust();
     }
     this.velocity.add(this.gravityVector);
     this.velocity.x *= 0.98;
