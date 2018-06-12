@@ -11,7 +11,7 @@ AFRAME.registerComponent("bullet", {
     this.raycaster.far = this.data.velocity.clone().multiplyScalar(1000); // TODO: use data from age.max
 
     var pos = this.el.object3D.position.clone();
-    this.raycaster.set(pos, this.data.velocity);
+    this.raycaster.set(pos, this.data.velocity.clone().normalize());
     this.collisionPoint = null;
     var intersects = this.raycaster.intersectObject(
       this.game.collidables.object3D,
