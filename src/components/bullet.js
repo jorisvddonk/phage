@@ -4,7 +4,7 @@ AFRAME.registerComponent("bullet", {
       type: "vec3"
     }
   },
-  dependencies: ["movable"],
+  dependencies: ["movable", "age"],
   init: function() {
     this.game = this.el.sceneEl.systems["game"];
     this.raycaster = new THREE.Raycaster();
@@ -12,7 +12,8 @@ AFRAME.registerComponent("bullet", {
 
     this.raycaster.far = this.el.components.movable.data.velocity
       .clone()
-      .multiplyScalar(1000); // TODO: use data from age.max
+      .multiplyScalar(this.el.components.age.data.max / 1000)
+      .length();
 
     var pos = this.el.object3D.position.clone();
     this.raycaster.set(
