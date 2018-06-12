@@ -9,6 +9,7 @@ require("./src/components/spaceship-model.js");
 require("./src/components/building.js");
 require("./src/components/building-model.js");
 require("./src/components/place-on-ground.js");
+require("./src/components/destroyable.js");
 require("./src/components/movable.js");
 require("./src/components/bullet.js");
 require("./src/components/age.js");

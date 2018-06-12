@@ -20,21 +20,24 @@ AFRAME.registerComponent("bullet", {
       pos,
       this.el.components.movable.data.velocity.clone().normalize()
     );
-    this.collisionPoint = null;
+    this.collision = null;
     var intersects = this.raycaster.intersectObject(
       this.game.collidables.object3D,
       true
     );
     if (intersects.length > 0) {
-      this.collisionPoint = intersects[0].point;
+      this.collision = intersects[0];
     }
   },
   tick: function(time, timeDelta) {
     if (
-      this.collisionPoint &&
-      this.collisionPoint.distanceToSquared(this.el.object3D.position) < 2
+      this.collision &&
+      this.collision.point.distanceToSquared(this.el.object3D.position) < 2
     ) {
-      this.game.addExplosion(this.collisionPoint);
+      this.game.addExplosion(this.collision.point);
+      if (this.collision.object && this.collision.object.el) {
+        this.collision.object.el.emit("hitWithBullet");
+      }
       if (this.el.parentNode) {
         this.el.parentNode.removeChild(this.el);
         return;
