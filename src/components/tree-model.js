@@ -36,7 +36,7 @@ AFRAME.registerComponent("tree-model", {
       if (i < 4) {
         face.color.setRGB(0.1, 0.4, 0.1);
       } else {
-        face.color.setRGB(0.1, 0.3, 0.1);
+        face.color.setRGB(0.4, 0.2, 0.1);
       }
     });
 
