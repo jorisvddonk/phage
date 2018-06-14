@@ -2,6 +2,14 @@ AFRAME.registerComponent("destroyable", {
   schema: {
     hp: {
       type: "int"
+    },
+    explosionColor: {
+      type: "color",
+      default: "#fc4"
+    },
+    explosionSize: {
+      type: "float",
+      default: 0.5
     }
   },
   init: function(data) {
@@ -15,7 +23,11 @@ AFRAME.registerComponent("destroyable", {
     this.hp = this.hp - dmg;
     if (this.hp <= 0) {
       if (this.el.parentNode) {
-        this.game.addExplosion(this.el.getAttribute("position"), 0.5);
+        this.game.addExplosion(
+          this.el.getAttribute("position"),
+          this.data.explosionSize,
+          this.data.explosionColor
+        );
         this.el.parentNode.removeChild(this.el);
         return;
       }

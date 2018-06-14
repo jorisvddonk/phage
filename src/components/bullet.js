@@ -34,7 +34,7 @@ AFRAME.registerComponent("bullet", {
       this.collision &&
       this.collision.point.distanceToSquared(this.el.object3D.position) < 2
     ) {
-      this.game.addExplosion(this.collision.point);
+      this.game.addExplosion(this.collision.point, 0.03, "#444");
       if (this.collision.object && this.collision.object.el) {
         this.collision.object.el.emit("hitWithBullet");
       }

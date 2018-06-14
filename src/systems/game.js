@@ -42,13 +42,10 @@ AFRAME.registerSystem("game", {
     bullet.setAttribute("movable", "velocity", vector);
     this.world.appendChild(bullet);
   },
-  addExplosion: function(position, size) {
+  addExplosion: function(position, size, color) {
     var explosion = document.createElement("a-sphere");
     explosion.setAttribute("explosion", "");
-    explosion.setAttribute(
-      "color",
-      size > 0.1 ? "rgb(255,200,100)" : "rgb(100,100,100)"
-    );
+    explosion.setAttribute("color", color);
     explosion.setAttribute("opacity", "0.75");
     explosion.setAttribute("radius", size !== undefined ? size : 0.03);
     explosion.setAttribute("sound", "src", "#hit");
