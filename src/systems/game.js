@@ -47,7 +47,7 @@ AFRAME.registerSystem("game", {
     explosion.setAttribute("explosion", "");
     explosion.setAttribute(
       "color",
-      size > 0.1 ? "rgba(255,200,100,0.6)" : "rgba(100,100,100,0.75)"
+      size > 0.1 ? "rgb(255,200,100)" : "rgb(100,100,100)"
     );
     explosion.setAttribute("opacity", "0.75");
     explosion.setAttribute("radius", size !== undefined ? size : 0.03);
