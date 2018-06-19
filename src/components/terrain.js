@@ -1,7 +1,6 @@
-var SimplexNoise = require("simplex-noise");
 AFRAME.registerComponent("terrain", {
   init: function() {
-    var simplex = new SimplexNoise();
+    this.terrainData = this.el.sceneEl.systems["terrain-data"];
     this.geometry = new THREE.Geometry();
     var TERRAINSIZE = 100;
     var NOISE_RESOLUTION = 0.1;
@@ -10,7 +9,10 @@ AFRAME.registerComponent("terrain", {
 
     for (var y = 0; y < TERRAINSIZE; y++) {
       for (var x = 0; x < TERRAINSIZE; x++) {
-        var z = simplex.noise2D(x * NOISE_RESOLUTION, y * NOISE_RESOLUTION);
+        var z = this.terrainData.getHeightForCoordinates(
+          x * NOISE_RESOLUTION,
+          y * NOISE_RESOLUTION
+        );
         if (z <= 0) {
           z = 0;
         }

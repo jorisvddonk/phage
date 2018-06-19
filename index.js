@@ -19,3 +19,4 @@ require("./src/components/generate-trees.js");
 require("./src/systems/game.js");
 require("./src/systems/gamesounds.js");
 require("./src/systems/keyboard.js");
+require("./src/systems/terrain-data.js");
