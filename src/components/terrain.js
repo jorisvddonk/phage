@@ -5,13 +5,12 @@ AFRAME.registerComponent("terrain", {
     this.geometry = new THREE.Geometry();
     var TERRAINSIZE = 100;
     var NOISE_RESOLUTION = 0.1;
-    var TERRAIN_MAX_HEIGHT = 2;
+    var TERRAIN_H_SCALE = 0.5;
+    var TERRAIN_V_SCALE = 1;
 
     for (var y = 0; y < TERRAINSIZE; y++) {
       for (var x = 0; x < TERRAINSIZE; x++) {
-        var z =
-          simplex.noise2D(x * NOISE_RESOLUTION, y * NOISE_RESOLUTION) *
-          TERRAIN_MAX_HEIGHT;
+        var z = simplex.noise2D(x * NOISE_RESOLUTION, y * NOISE_RESOLUTION);
         if (z <= 0) {
           z = 0;
         }
@@ -41,7 +40,7 @@ AFRAME.registerComponent("terrain", {
     });
 
     this.geometry.translate(TERRAINSIZE * -0.5, TERRAINSIZE * -0.5, 0);
-    this.geometry.scale(0.5, 0.5, 0.5);
+    this.geometry.scale(TERRAIN_H_SCALE, TERRAIN_H_SCALE, TERRAIN_V_SCALE);
     this.geometry.rotateX(Math.PI * -0.5);
 
     this.material = new THREE.MeshStandardMaterial({
