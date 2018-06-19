@@ -3,13 +3,15 @@ AFRAME.registerComponent("terrain", {
   init: function() {
     var simplex = new SimplexNoise();
     this.geometry = new THREE.Geometry();
-    var SIZE = 100;
-    var RESO = 0.1;
-    var VRESO = 2;
+    var TERRAINSIZE = 100;
+    var NOISE_RESOLUTION = 0.1;
+    var TERRAIN_MAX_HEIGHT = 2;
 
-    for (var y = 0; y < SIZE; y++) {
-      for (var x = 0; x < SIZE; x++) {
-        var z = simplex.noise2D(x * RESO, y * RESO) * VRESO;
+    for (var y = 0; y < TERRAINSIZE; y++) {
+      for (var x = 0; x < TERRAINSIZE; x++) {
+        var z =
+          simplex.noise2D(x * NOISE_RESOLUTION, y * NOISE_RESOLUTION) *
+          TERRAIN_MAX_HEIGHT;
         if (z <= 0) {
           z = 0;
         }
@@ -17,10 +19,10 @@ AFRAME.registerComponent("terrain", {
       }
     }
 
-    for (var y = 0; y < SIZE - 1; y++) {
-      for (var x = 0; x < SIZE - 1; x++) {
-        var i = x + y * SIZE;
-        var ij = x + (y + 1) * SIZE;
+    for (var y = 0; y < TERRAINSIZE - 1; y++) {
+      for (var x = 0; x < TERRAINSIZE - 1; x++) {
+        var i = x + y * TERRAINSIZE;
+        var ij = x + (y + 1) * TERRAINSIZE;
         this.geometry.faces.push(new THREE.Face3(i, i + 1, ij));
         this.geometry.faces.push(new THREE.Face3(ij, i + 1, ij + 1));
       }
@@ -38,7 +40,7 @@ AFRAME.registerComponent("terrain", {
       }
     });
 
-    this.geometry.translate(SIZE * -0.5, SIZE * -0.5, 0);
+    this.geometry.translate(TERRAINSIZE * -0.5, TERRAINSIZE * -0.5, 0);
     this.geometry.scale(0.5, 0.5, 0.5);
     this.geometry.rotateX(Math.PI * -0.5);
 
