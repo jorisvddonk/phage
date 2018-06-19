@@ -1,17 +1,22 @@
 AFRAME.registerComponent("terrain", {
+  schema: {
+    xmin: { default: 0, min: 0, max: Number.MAX_SAFE_INTEGER, type: "int" },
+    xmax: { default: 99, min: 0, max: Number.MAX_SAFE_INTEGER, type: "int" },
+    ymin: { default: 0, min: 0, max: Number.MAX_SAFE_INTEGER, type: "int" },
+    ymax: { default: 99, min: 0, max: Number.MAX_SAFE_INTEGER, type: "int" },
+    noiseresolution: { default: 0.1, type: "float" },
+    hscale: { default: 0.5, type: "float" },
+    vscale: { default: 1, type: "float" }
+  },
   init: function() {
     this.terrainData = this.el.sceneEl.systems["terrain-data"];
     this.geometry = new THREE.Geometry();
-    var TERRAINSIZE = 100;
-    var NOISE_RESOLUTION = 0.1;
-    var TERRAIN_H_SCALE = 0.5;
-    var TERRAIN_V_SCALE = 1;
 
-    for (var y = 0; y < TERRAINSIZE; y++) {
-      for (var x = 0; x < TERRAINSIZE; x++) {
+    for (var y = this.data.ymin; y <= this.data.ymax; y++) {
+      for (var x = this.data.ymin; x <= this.data.xmax; x++) {
         var z = this.terrainData.getHeightForCoordinates(
-          x * NOISE_RESOLUTION,
-          y * NOISE_RESOLUTION
+          x * this.data.noiseresolution,
+          y * this.data.noiseresolution
         );
         if (z <= 0) {
           z = 0;
@@ -20,10 +25,10 @@ AFRAME.registerComponent("terrain", {
       }
     }
 
-    for (var y = 0; y < TERRAINSIZE - 1; y++) {
-      for (var x = 0; x < TERRAINSIZE - 1; x++) {
-        var i = x + y * TERRAINSIZE;
-        var ij = x + (y + 1) * TERRAINSIZE;
+    for (var y = this.data.ymin; y <= this.data.ymax - 1; y++) {
+      for (var x = this.data.xmin; x <= this.data.xmax - 1; x++) {
+        var i = x + y * (this.data.ymax - this.data.ymin + 1);
+        var ij = x + (y + 1) * (this.data.ymax - this.data.ymin + 1);
         this.geometry.faces.push(new THREE.Face3(i, i + 1, ij));
         this.geometry.faces.push(new THREE.Face3(ij, i + 1, ij + 1));
       }
@@ -41,8 +46,12 @@ AFRAME.registerComponent("terrain", {
       }
     });
 
-    this.geometry.translate(TERRAINSIZE * -0.5, TERRAINSIZE * -0.5, 0);
-    this.geometry.scale(TERRAIN_H_SCALE, TERRAIN_H_SCALE, TERRAIN_V_SCALE);
+    this.geometry.translate(
+      (this.data.ymax - this.data.ymin + 1) * -0.5,
+      (this.data.xmax - this.data.xmin + 1) * -0.5,
+      0
+    );
+    this.geometry.scale(this.data.hscale, this.data.hscale, this.data.vscale);
     this.geometry.rotateX(Math.PI * -0.5);
 
     this.material = new THREE.MeshStandardMaterial({
