@@ -11,9 +11,10 @@ AFRAME.registerComponent("terrain", {
   init: function() {
     this.terrainData = this.el.sceneEl.systems["terrain-data"];
     this.geometry = new THREE.Geometry();
-
+    var xdiff = this.data.xmax - this.data.xmin;
+    var ydiff = this.data.ymax - this.data.ymin;
     for (var y = this.data.ymin; y <= this.data.ymax; y++) {
-      for (var x = this.data.ymin; x <= this.data.xmax; x++) {
+      for (var x = this.data.xmin; x <= this.data.xmax; x++) {
         var z = this.terrainData.getHeightForCoordinates(
           x * this.data.noiseresolution,
           y * this.data.noiseresolution
@@ -25,12 +26,26 @@ AFRAME.registerComponent("terrain", {
       }
     }
 
-    for (var y = this.data.ymin; y <= this.data.ymax - 1; y++) {
-      for (var x = this.data.xmin; x <= this.data.xmax - 1; x++) {
-        var i = x + y * (this.data.ymax - this.data.ymin + 1);
-        var ij = x + (y + 1) * (this.data.ymax - this.data.ymin + 1);
-        this.geometry.faces.push(new THREE.Face3(i, i + 1, ij));
-        this.geometry.faces.push(new THREE.Face3(ij, i + 1, ij + 1));
+    function gv(x, y) {
+      return y * (xdiff + 1) + x;
+    }
+
+    for (var ry = 0; ry <= ydiff - 1; ry++) {
+      for (var rx = 0; rx <= xdiff - 1; rx++) {
+        this.geometry.faces.push(
+          new THREE.Face3(
+            gv(rx + 0, ry + 0),
+            gv(rx + 1, ry + 0),
+            gv(rx + 0, ry + 1)
+          )
+        );
+        this.geometry.faces.push(
+          new THREE.Face3(
+            gv(rx + 1, ry + 0),
+            gv(rx + 1, ry + 1),
+            gv(rx + 0, ry + 1)
+          )
+        );
       }
     }
 
@@ -46,11 +61,6 @@ AFRAME.registerComponent("terrain", {
       }
     });
 
-    this.geometry.translate(
-      (this.data.ymax - this.data.ymin + 1) * -0.5,
-      (this.data.xmax - this.data.xmin + 1) * -0.5,
-      0
-    );
     this.geometry.scale(this.data.hscale, this.data.hscale, this.data.vscale);
     this.geometry.rotateX(Math.PI * -0.5);
 

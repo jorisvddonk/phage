@@ -4,6 +4,7 @@ require("aframe-point-component");
 require("./src/components/follow-camera.js");
 require("./src/components/dirlight.js");
 require("./src/components/terrain.js");
+require("./src/components/terraingridmaker.js");
 require("./src/components/spaceship.js");
 require("./src/components/spaceship-model.js");
 require("./src/components/building.js");
