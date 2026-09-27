@@ -2,7 +2,7 @@
 
 A work-in-progress game inspired by [Zarch](https://en.wikipedia.org/wiki/Zarch).
 
-http://phage.sarvva.moos.es/
+https://jorisvddonk.github.io/phage/
 
 ## Controls
 
@@ -11,6 +11,12 @@ If you don't have a controller attached:
 - `A` - Thrust upwards
 - `Space` - Shoot
 - `Arrow keys` - Turn
+
+If you're on a touchscreen device, on-screen buttons appear automatically:
+
+- `THRUST` - Thrust upwards
+- `FIRE` - Shoot
+- Directional pad - Turn and pitch
 
 If you do have a (twin-stick) controller attached (Xbox 360 style controller):
 
